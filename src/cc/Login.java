@@ -108,9 +108,7 @@ String pass="";
     }//GEN-LAST:event_btnLoginMouseClicked
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-                
-        
-        
+                        
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
