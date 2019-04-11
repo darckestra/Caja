@@ -5,6 +5,7 @@
  */
 package cc;
 
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,6 +13,7 @@ import javax.swing.JOptionPane;
  * @author Jose
  */
 public class Login extends javax.swing.JFrame {
+
 String usu="";
 String pass="";
     /**
@@ -20,6 +22,7 @@ String pass="";
     public Login() {
         initComponents();
         setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -43,6 +46,18 @@ String pass="";
 
         jLabel2.setText("Password:");
 
+        txtUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtUsuarioKeyPressed(evt);
+            }
+        });
+
+        txtPass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPassKeyPressed(evt);
+            }
+        });
+
         btnLogin.setText("Login");
         btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -54,31 +69,35 @@ String pass="";
                 btnLoginActionPerformed(evt);
             }
         });
+        btnLogin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnLoginKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                            .addComponent(txtPass)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(138, 138, 138)
-                        .addComponent(btnLogin)))
-                .addContainerGap(61, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(txtPass))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(158, Short.MAX_VALUE)
+                .addComponent(btnLogin)
+                .addGap(131, 131, 131))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(152, Short.MAX_VALUE)
+                .addContainerGap(148, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -97,20 +116,60 @@ String pass="";
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
         usu=txtUsuario.getText();
         pass=new String(txtPass.getPassword());
-        if (usu.equals("root")&&pass.equals("12345")) {
-            CajaVista cv= new CajaVista();
-            cv.setVisible(true);
-            this.dispose();
+        
+        if (usu.equals("root")&&pass.equals("12345")) {            
+            CajaVista cv= new CajaVista();                     
+            cv.setVisible(true);            
+            this.dispose();  
+            
+            
         }else{
             JOptionPane.showMessageDialog(this, "Usuario o Contraseña Incorrectos");
-        }
-        
+        }        
     }//GEN-LAST:event_btnLoginMouseClicked
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
                         
     }//GEN-LAST:event_btnLoginActionPerformed
 
+    private void btnLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnLoginKeyPressed
+        
+    }//GEN-LAST:event_btnLoginKeyPressed
+
+    private void txtPassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPassKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            usu = txtUsuario.getText();
+            pass = new String(txtPass.getPassword());
+
+            if (usu.equals("root") && pass.equals("12345")) {
+                CajaVista cv = new CajaVista();
+                cv.setVisible(true);
+                this.dispose();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario o Contraseña Incorrectos");
+            }
+        }
+    }//GEN-LAST:event_txtPassKeyPressed
+
+    private void txtUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuarioKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            usu = txtUsuario.getText();
+            pass = new String(txtPass.getPassword());
+
+            if (usu.equals("root") && pass.equals("12345")) {
+                CajaVista cv = new CajaVista();
+                cv.setVisible(true);
+                this.dispose();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario o Contraseña Incorrectos");
+            }
+        }
+    }//GEN-LAST:event_txtUsuarioKeyPressed
+  
     /**
      * @param args the command line arguments
      */
