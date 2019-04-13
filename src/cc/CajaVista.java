@@ -7,6 +7,7 @@ package cc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -100,6 +101,11 @@ ZoneId zona = ZoneId.systemDefault();
                 tblVenderMouseClicked(evt);
             }
         });
+        tblVender.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tblVenderKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblVender);
 
         jLabel1.setText("Caja:");
@@ -175,20 +181,27 @@ ZoneId zona = ZoneId.systemDefault();
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblVenderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblVenderMouseClicked
-        DefaultTableModel modelo = (DefaultTableModel) tblVender.getModel();
-         int fil = tblVender.getSelectedRow();
-         int col = tblVender.getSelectedColumn();
-       //JOptionPane.showMessageDialog(tblVender.getValueAt(tblVender.getSelectedRow(), 0).toString());
-       JOptionPane.showMessageDialog(this,"Numero de la fila "+ fil);
-       JOptionPane.showMessageDialog(this,"Numero de la columna "+ col);
-        if (col==1) {
-            Buscar b= new Buscar();
-            b.setVisible(true);
-        }
-        else{
-            
-        }
+       
     }//GEN-LAST:event_tblVenderMouseClicked
+
+    private void tblVenderKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblVenderKeyPressed
+         DefaultTableModel modelo = (DefaultTableModel) tblVender.getModel();
+        int fil = tblVender.getSelectedRow();
+        int col = tblVender.getSelectedColumn();
+        //JOptionPane.showMessageDialog(tblVender.getValueAt(tblVender.getSelectedRow(), 0).toString());
+        //JOptionPane.showMessageDialog(this, "Numero de la fila " + fil);
+        //JOptionPane.showMessageDialog(this, "Numero de la columna " + col);
+        if (col == 2) {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                Buscar b = new Buscar();
+                b.setVisible(true);
+            } else {
+                //JOptionPane.showMessageDialog(this, "ocurrito un problema");
+            }
+        } else {
+
+        }
+    }//GEN-LAST:event_tblVenderKeyPressed
 
     /**
      * @param args the command line arguments
