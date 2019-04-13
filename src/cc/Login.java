@@ -121,8 +121,7 @@ String pass="";
             CajaVista cv= new CajaVista();                     
             cv.setVisible(true);            
             this.dispose();  
-            
-            
+
         }else{
             JOptionPane.showMessageDialog(this, "Usuario o Contraseña Incorrectos");
         }        

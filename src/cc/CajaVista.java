@@ -18,6 +18,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -67,7 +68,7 @@ ZoneId zona = ZoneId.systemDefault();
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblVender = new javax.swing.JTable();
         lblhora = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -83,7 +84,7 @@ ZoneId zona = ZoneId.systemDefault();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblVender.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -94,7 +95,12 @@ ZoneId zona = ZoneId.systemDefault();
                 "Al", "Codigo", "Descripción", "Precio", "Cant.", "Importe"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tblVender.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblVenderMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblVender);
 
         jLabel1.setText("Caja:");
 
@@ -168,6 +174,22 @@ ZoneId zona = ZoneId.systemDefault();
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tblVenderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblVenderMouseClicked
+        DefaultTableModel modelo = (DefaultTableModel) tblVender.getModel();
+         int fil = tblVender.getSelectedRow();
+         int col = tblVender.getSelectedColumn();
+       //JOptionPane.showMessageDialog(tblVender.getValueAt(tblVender.getSelectedRow(), 0).toString());
+       JOptionPane.showMessageDialog(this,"Numero de la fila "+ fil);
+       JOptionPane.showMessageDialog(this,"Numero de la columna "+ col);
+        if (col==1) {
+            Buscar b= new Buscar();
+            b.setVisible(true);
+        }
+        else{
+            
+        }
+    }//GEN-LAST:event_tblVenderMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -219,7 +241,7 @@ ZoneId zona = ZoneId.systemDefault();
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblhora;
+    private javax.swing.JTable tblVender;
     // End of variables declaration//GEN-END:variables
 }
