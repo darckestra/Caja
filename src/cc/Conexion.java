@@ -5,11 +5,13 @@
  */
 package cc;
 
-import com.sun.jdi.connect.spi.Connection;
-import java.beans.Statement;
+
+import com.mysql.jdbc.Connection;
+import java.awt.HeadlessException;
+
 import javax.swing.JOptionPane;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -18,41 +20,49 @@ import javax.swing.JOptionPane;
  * @author Jose
  */
 public class Conexion {
-    Connection conexion = null;
-    Statement comando = null;
-    ResultSet registro;
+//    Connection conexion = null;
+//    Statement comando = null;
+//    ResultSet registro;
+    
+    private static Connection conn;
+    private static final String driver = "com.mysql.jdbc.Driver";
+    private static final String user ="root";
+    private static final String password = "";
+    private static final String url="jdbc:mysql://localhost:3306/prueba";
+    
+    
  
-    public Connection MySQLConnect() {
- 
-        try {
-            //Driver JDBC
-            Class.forName("com.mysql.jdbc.Driver");
-            //Nombre del servidor. localhost:3306 es la ruta y el puerto de la conexión MySQL
-            //panamahitek_text es el nombre que le dimos a la base de datos
-            String servidor = "jdbc:mysql://localhost:3306/prueba";
-            //El root es el nombre de usuario por default. No hay contraseña
-            String usuario = "root";
-            String pass = "";
-            //Se inicia la conexión
-            conexion = (Connection) DriverManager.getConnection(servidor, usuario, pass);
- 
-        } catch (ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, ex, "Error en la conexión a la base de datos 1: " 
-                    + ex.getMessage(), JOptionPane.ERROR_MESSAGE);
-            conexion = null;
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex, "Error en la conexión a la base de datos 2: " 
-                    + ex.getMessage(), JOptionPane.ERROR_MESSAGE);
-            conexion = null;
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex, "Error en la conexión a la base de datos 3: " 
-                    + ex.getMessage(), JOptionPane.ERROR_MESSAGE);
-            conexion = null;
-        } finally {
-            JOptionPane.showMessageDialog(null, "Conexión Exitosa");
-            return conexion;
-        }
-    }
+//    public Connection MySQLConnect() {
+// 
+//        try {
+//            //Driver JDBC
+//            Class.forName("com.mysql.jdbc.Driver");
+//            //Nombre del servidor. localhost:3306 es la ruta y el puerto de la conexión MySQL
+//            //panamahitek_text es el nombre que le dimos a la base de datos
+//            String servidor = "jdbc:mysql://localhost:3306/prueba";
+//            //El root es el nombre de usuario por default. No hay contraseña
+//            String usuario = "root";
+//            String pass = "";
+//            //Se inicia la conexión
+//            conexion = (Connection) DriverManager.getConnection(servidor, usuario, pass);
+// 
+//        } catch (ClassNotFoundException ex) {
+//            JOptionPane.showMessageDialog(null, ex, "Error en la conexión a la base de datos 1: " 
+//                    + ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+//            conexion = null;
+//        } catch (SQLException ex) {
+//            JOptionPane.showMessageDialog(null, ex, "Error en la conexión a la base de datos 2: " 
+//                    + ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+//            conexion = null;
+//        } catch (Exception ex) {
+//            JOptionPane.showMessageDialog(null, ex, "Error en la conexión a la base de datos 3: " 
+//                    + ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+//            conexion = null;
+//        } finally {
+//            JOptionPane.showMessageDialog(null, "Conexión Exitosa");
+//            return conexion;
+//        }
+//    }
             
     
     
@@ -92,6 +102,37 @@ public class Conexion {
 //
 //        return conn;
 //    }
+
+    public Conexion() {
+        
+        conn=null;
+        try {
+            Class.forName(driver);
+            conn= (Connection) DriverManager.getConnection(url, user, password);
+            if (conn !=null) {
+                JOptionPane.showMessageDialog(null, "Conexion establecida");
+            }
+        } catch (HeadlessException | ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "error de conexion "+e);
+        }
+    }
+    
+    //este metodono nos retorna la conexion
+    public Connection getConnection(){
+        return conn;
+    }
+    
+    //este metodo es para desconectar
+    public void desconectar(){
+        conn=null;
+        if (conn==null) {
+            JOptionPane.showMessageDialog(null, "conexion terminada");
+        }else{
+            JOptionPane.showMessageDialog(null, "no se pudo desconectar");
+        }
+    }
+    
+    
     
 
 }

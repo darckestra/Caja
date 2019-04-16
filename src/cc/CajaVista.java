@@ -5,6 +5,7 @@
  */
 package cc;
 
+import com.mysql.jdbc.Connection;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,6 +32,7 @@ public class CajaVista extends javax.swing.JFrame {
 
 ZoneId zona = ZoneId.systemDefault();
 private JTextField c1;
+Conexion conn;
 
     /**
      * Creates new form CajaVista
@@ -295,8 +297,8 @@ private JTextField c1;
     }//GEN-LAST:event_MsalirActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       Conexion c = new Conexion();
-       c.MySQLConnect();
+       conn= new Conexion();
+       Connection reg = conn.getConnection();
        
     }//GEN-LAST:event_jButton1ActionPerformed
 
