@@ -6,14 +6,16 @@
 package cc;
 
 
-import com.mysql.jdbc.Connection;
+
+
 import java.awt.HeadlessException;
 
-import javax.swing.JOptionPane;
+
 import java.sql.DriverManager;
 
-import java.sql.SQLException;
+import java.sql.*;
 import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -24,11 +26,11 @@ public class Conexion {
 //    Statement comando = null;
 //    ResultSet registro;
     
-    private static Connection conn;
-    private static final String driver = "com.mysql.jdbc.Driver";
-    private static final String user ="root";
-    private static final String password = "";
-    private static final String url="jdbc:mysql://localhost:3306/prueba";
+    public static Connection conn;
+    public static final String driver = "com.mysql.jdbc.Driver";
+    public static final String user ="root";
+    public static final String password = "";
+    public static final String url="jdbc:mysql://localhost:3306/prueba";
     
     
  
@@ -131,6 +133,12 @@ public class Conexion {
             JOptionPane.showMessageDialog(null, "no se pudo desconectar");
         }
     }
+
+    
+
+    
+    
+    
     
     
     

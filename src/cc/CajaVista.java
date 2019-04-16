@@ -297,8 +297,10 @@ Conexion conn;
     }//GEN-LAST:event_MsalirActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       conn= new Conexion();
-       Connection reg = conn.getConnection();
+ 
+       Buscar b = new Buscar();
+       b.setVisible(true);
+       this.dispose();
        
     }//GEN-LAST:event_jButton1ActionPerformed
 
