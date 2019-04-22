@@ -35,7 +35,7 @@ private TableRowSorter trsfiltro;
         this.setExtendedState(MAXIMIZED_BOTH); 
     }
  public void filtro() {
-        trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscar.getText(), 1));
+        trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscar.getText(), 0,1));
     }
     
 //    private void filtro(String consulta, JTable tblBuscar){
@@ -58,7 +58,8 @@ private TableRowSorter trsfiltro;
         jScrollPane2 = new javax.swing.JScrollPane();
         tblBuscar = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setUndecorated(true);
 
         jLabel1.setText("Buscar:");
 
