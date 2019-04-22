@@ -115,7 +115,7 @@ private TableRowSorter trsfiltro;
                     .addComponent(jLabel1)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -139,7 +139,7 @@ private TableRowSorter trsfiltro;
 
     private void txtBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyTyped
         char c = evt.getKeyChar();
-        String cad = ("" + c);
+        String cad = ("" + c).toUpperCase();
         c = cad.charAt(0);
         evt.setKeyChar(c);
         
@@ -166,20 +166,21 @@ private TableRowSorter trsfiltro;
        DefaultTableModel model = new DefaultTableModel();
        //model.addColumn("id");
        model.addColumn("codigo");
-       model.addColumn("nombre");
-       model.addColumn("cantidad");
        model.addColumn("descripcion");
+       model.addColumn("unidad");
+       model.addColumn("existencia");
+       model.addColumn("ddd");
        tblBuscar.setModel(model);
-       String []datos= new String[4];
+       String []datos= new String[5];
         try {
            sent = conn.createStatement();
-            ResultSet rs = sent.executeQuery("SELECT codigo,nombre,cantidad,descripcion FROM productos");
+            ResultSet rs = sent.executeQuery("SELECT p.codigo,p.descripcion,p.unidad,p.existencia, f.descripcion as ddd FROM productos p left join familias f on p.id_familia=f.id_familia");
             while (rs.next()) {                
                 datos[0]=rs.getString(1);
                 datos[1]=rs.getString(2);
                 datos[2]=rs.getString(3);
                 datos[3]=rs.getString(4);
-                
+                datos[4]=rs.getString(5);
                 
                 model.addRow(datos);
             }
