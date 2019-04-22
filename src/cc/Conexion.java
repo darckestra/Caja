@@ -112,7 +112,7 @@ public class Conexion {
             Class.forName(driver);
             conn= (Connection) DriverManager.getConnection(url, user, password);
             if (conn !=null) {
-                JOptionPane.showMessageDialog(null, "Conexion establecida");
+                //JOptionPane.showMessageDialog(null, "Conexion establecida");
             }
         } catch (HeadlessException | ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "error de conexion "+e);

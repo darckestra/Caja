@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 public class Buscar extends javax.swing.JFrame {
 Conexion c= new Conexion();
 Connection conn = c.getConnection();
-    Statement sent;
+Statement sent;
     
     /**
      * Creates new form Buscar
@@ -109,10 +109,10 @@ Connection conn = c.getConnection();
     public void llenar(){
        DefaultTableModel model = new DefaultTableModel();
        model.addColumn("id");
-       model.addColumn("almacen");
-       model.addColumn("descripcion");
-       model.addColumn("familia");
+       model.addColumn("codigo");
+       model.addColumn("nombre");
        model.addColumn("cantidad");
+       model.addColumn("descripcion");
        tblBuscar.setModel(model);
        String []datos= new String[5];
         try {

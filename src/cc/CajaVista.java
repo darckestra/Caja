@@ -104,8 +104,11 @@ Conexion conn;
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
         Msalir = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        MBuscar = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setUndecorated(true);
         setResizable(false);
 
         jLabel1.setText("Caja:");
@@ -184,7 +187,7 @@ Conexion conn;
         jMenuItem6.setText("Contenido de caja");
         jMenu3.add(jMenuItem6);
 
-        jMenuItem7.setText("Corte x por caja y fecha");
+        jMenuItem7.setText("Corte por por caja y fecha");
         jMenu3.add(jMenuItem7);
 
         jMenuItem8.setText("Corte de caja");
@@ -221,6 +224,16 @@ Conexion conn;
             }
         });
         jMenu1.add(Msalir);
+        jMenu1.add(jSeparator1);
+
+        MBuscar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, java.awt.event.InputEvent.SHIFT_MASK));
+        MBuscar.setText("Buscar");
+        MBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MBuscarActionPerformed(evt);
+            }
+        });
+        jMenu1.add(MBuscar);
 
         jMenuBar1.add(jMenu1);
 
@@ -304,6 +317,11 @@ Conexion conn;
        
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void MBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MBuscarActionPerformed
+       MiniBuscar mb = new MiniBuscar();
+       mb.setVisible(true);       
+    }//GEN-LAST:event_MBuscarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -345,6 +363,7 @@ Conexion conn;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem MBuscar;
     private javax.swing.JMenuItem Mcajon;
     private javax.swing.JMenuItem Msalir;
     private javax.swing.JButton jButton1;
@@ -374,6 +393,7 @@ Conexion conn;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JLabel lblhora;
     // End of variables declaration//GEN-END:variables
 }
