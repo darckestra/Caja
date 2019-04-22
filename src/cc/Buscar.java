@@ -6,10 +6,14 @@
 package cc;
 
 
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -19,6 +23,8 @@ public class Buscar extends javax.swing.JFrame {
 Conexion c= new Conexion();
 Connection conn = c.getConnection();
 Statement sent;
+DefaultTableModel dm;
+private TableRowSorter trsfiltro;
     
     /**
      * Creates new form Buscar
@@ -28,7 +34,16 @@ Statement sent;
         llenar();
         this.setExtendedState(MAXIMIZED_BOTH); 
     }
-
+ public void filtro() {
+        trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscar.getText(), 1));
+    }
+    
+//    private void filtro(String consulta, JTable tblBuscar){
+//        dm = (DefaultTableModel) tblBuscar.getModel();
+//        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(dm);
+//        tblBuscar.setRowSorter(tr);
+//        tr.setRowFilter(RowFilter.regexFilter(consulta));
+//}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,9 +62,20 @@ Statement sent;
 
         jLabel1.setText("Buscar:");
 
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarActionPerformed(evt);
+            }
+        });
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtBuscarKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyTyped(evt);
             }
         });
 
@@ -106,24 +132,53 @@ Statement sent;
         }
     }//GEN-LAST:event_txtBuscarKeyPressed
 
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarActionPerformed
+
+    private void txtBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyTyped
+        char c = evt.getKeyChar();
+        String cad = ("" + c);
+        c = cad.charAt(0);
+        evt.setKeyChar(c);
+        
+        txtBuscar.addKeyListener(new KeyAdapter() {
+            public void keyReleased(final KeyEvent e) {
+                String cadena = (txtBuscar.getText());
+                txtBuscar.setText(cadena);
+                repaint();
+                filtro();
+            }
+        });
+        trsfiltro = new TableRowSorter(tblBuscar.getModel());
+        tblBuscar.setRowSorter(trsfiltro);
+
+
+
+    }//GEN-LAST:event_txtBuscarKeyTyped
+
+    private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
+     //   filtro(txtBuscar.getText().toUpperCase(), tblBuscar);
+    }//GEN-LAST:event_txtBuscarKeyReleased
+
     public void llenar(){
        DefaultTableModel model = new DefaultTableModel();
-       model.addColumn("id");
+       //model.addColumn("id");
        model.addColumn("codigo");
        model.addColumn("nombre");
        model.addColumn("cantidad");
        model.addColumn("descripcion");
        tblBuscar.setModel(model);
-       String []datos= new String[5];
+       String []datos= new String[4];
         try {
            sent = conn.createStatement();
-            ResultSet rs = sent.executeQuery("SELECT * FROM productos");
+            ResultSet rs = sent.executeQuery("SELECT codigo,nombre,cantidad,descripcion FROM productos");
             while (rs.next()) {                
                 datos[0]=rs.getString(1);
                 datos[1]=rs.getString(2);
                 datos[2]=rs.getString(3);
                 datos[3]=rs.getString(4);
-                datos[4]=rs.getString(5);
+                
                 
                 model.addRow(datos);
             }

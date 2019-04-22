@@ -43,7 +43,7 @@ Conexion conn;
         this.setExtendedState(MAXIMIZED_BOTH); 
         //lblCajero.setText(u);
         //lblCaja.setText(p);    
-        
+        jMenu1.setVisible(true);
     }
     
 //-----------------------------------------------------------------------------
