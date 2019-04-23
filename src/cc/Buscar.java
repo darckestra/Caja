@@ -35,15 +35,10 @@ private TableRowSorter trsfiltro;
         this.setExtendedState(MAXIMIZED_BOTH); 
     }
  public void filtro() {
+     //se instancia el filtro
         trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscar.getText(), 0,1));
     }
-    
-//    private void filtro(String consulta, JTable tblBuscar){
-//        dm = (DefaultTableModel) tblBuscar.getModel();
-//        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(dm);
-//        tblBuscar.setRowSorter(tr);
-//        tr.setRowFilter(RowFilter.regexFilter(consulta));
-//}
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -144,7 +139,7 @@ private TableRowSorter trsfiltro;
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+//se regresa a la vista de la caja
     private void txtBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             this.dispose();
@@ -157,10 +152,11 @@ private TableRowSorter trsfiltro;
     }//GEN-LAST:event_txtBuscarKeyPressed
 
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_txtBuscarActionPerformed
-
+//se pone en uso el filtro
     private void txtBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyTyped
+        //se pone en uso el filtro
         char c = evt.getKeyChar();
         String cad = ("" + c).toUpperCase();
         c = cad.charAt(0);
@@ -176,13 +172,13 @@ private TableRowSorter trsfiltro;
         });
         trsfiltro = new TableRowSorter(tblBuscar.getModel());
         tblBuscar.setRowSorter(trsfiltro);
-
+        llenar();
 
 
     }//GEN-LAST:event_txtBuscarKeyTyped
 
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
-     //   filtro(txtBuscar.getText().toUpperCase(), tblBuscar);
+     
     }//GEN-LAST:event_txtBuscarKeyReleased
 
     private void tblBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBuscarMouseClicked
@@ -192,25 +188,28 @@ private TableRowSorter trsfiltro;
         txtdos.setText(tblBuscar.getValueAt(tblBuscar.getSelectedRow(), 0).toString());
         
     }//GEN-LAST:event_tblBuscarMouseClicked
-
+//se hace el update (actualizar) a la base de datos
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String en,donde="",total,cadena="";
-        int pp,ppp;
-        char c = 0;
-        en=txtBuscar.getText();        
+        String cantidad,donde="",total="";
+        double pp,ppp;
+//        char c = 0;
+        cantidad=txtBuscar.getText();        
         //for (int n = 0, n <str.length (); n + +) { char c = str.charAt (n); System.out.println (c); }
         
-            for (int i = 0; i < en.length(); i++) {
-                c = en.charAt(i);                
-                    if (c == '.') {
-                    break;
-                    }else{
-                        cadena=cadena+c;
-                }
-            }        
-        pp= Integer.parseInt(cadena);
-        ppp=pp-1;
-        total=Integer.toString(ppp);        
+//            for (int i = 0; i < en.length(); i++) {
+//                c = en.charAt(i);                
+//                    if (c == '.') {
+//                    break;
+//                    }else{
+//                        cadena=cadena+c;
+//                }
+//            }        
+//        pp= Integer.parseInt(cadena);
+//        ppp=pp-1.5;
+//        total=Integer.toString(ppp);        
+        pp=Double.parseDouble(cantidad);
+        ppp=pp-1.5;
+        total = String.valueOf(ppp);
         donde=txtdos.getText();
         String sql="update productos set existencia = ? where codigo = ?";
         
@@ -231,6 +230,7 @@ private TableRowSorter trsfiltro;
         txtdos.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    //se hace el llenado de la tabla con un select a la base de datos
     public void llenar(){
        DefaultTableModel model = new DefaultTableModel();
        //model.addColumn("id");
@@ -238,7 +238,7 @@ private TableRowSorter trsfiltro;
        model.addColumn("descripcion");
        model.addColumn("unidad");
        model.addColumn("existencia");
-       model.addColumn("ddd");
+       model.addColumn("familia");
        tblBuscar.setModel(model);
        String []datos= new String[5];
         try {
@@ -255,7 +255,7 @@ private TableRowSorter trsfiltro;
             }
             tblBuscar.setModel(model);
         } catch (SQLException e) {
-            
+            JOptionPane.showMessageDialog(null, "Ocurrio un problema");
         }
     }
     /**

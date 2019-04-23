@@ -7,7 +7,6 @@ package cc;
 
 import java.awt.event.KeyEvent;
 import java.sql.*;
-import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 /**
@@ -38,7 +37,7 @@ int x;
         enviar = txtMBuscar.getText();    
         try {
             sent = conn.createStatement();
-            ResultSet rs = sent.executeQuery("SELECT codigo,nombre FROM productos WHERE codigo = " + enviar);
+            ResultSet rs = sent.executeQuery("SELECT descripcion,existencia FROM productos WHERE codigo = " + enviar);
             while (rs.next()) {               
                 uno = rs.getString(1);
                 dos = rs.getString(2);
