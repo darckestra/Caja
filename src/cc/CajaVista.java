@@ -5,22 +5,15 @@
  */
 package cc;
 
-import com.mysql.jdbc.Connection;
-import java.awt.Rectangle;
+import java.sql.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
@@ -29,10 +22,11 @@ import javax.swing.table.DefaultTableModel;
  * @author Jose
  */
 public class CajaVista extends javax.swing.JFrame {
-
-ZoneId zona = ZoneId.systemDefault();
-private JTextField c1;
-Conexion conn;
+int sum=0;
+    Conexion c = new Conexion();
+    Connection conn = c.getConnection();
+    Statement sent;
+    ZoneId zona = ZoneId.systemDefault();
 
     /**
      * Creates new form CajaVista
@@ -40,15 +34,22 @@ Conexion conn;
     public CajaVista() {
         initComponents();
         new Thread(new reloj()).start();
-        this.setExtendedState(MAXIMIZED_BOTH); 
+        this.setExtendedState(MAXIMIZED_BOTH);
         //lblCajero.setText(u);
         //lblCaja.setText(p);    
         jMenu1.setVisible(true);
+        DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("codigo");
+            model.addColumn("descripcion");
+            model.addColumn("precio");
+            model.addColumn("cantidad");
+            model.addColumn("importe");
+            tblVenta.setModel(model);
     }
-    
+
 //-----------------------------------------------------------------------------
     public class reloj implements Runnable {
-        
+
         @Override
         public void run() {
             new Timer(0, new ActionListener() {
@@ -56,7 +57,7 @@ Conexion conn;
                 public void actionPerformed(ActionEvent e) {
                     //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                     Date d = new Date();
-                    DateFormat s = new SimpleDateFormat("HH:mm:ss" +" - "+ "dd/MM/yyyy");
+                    DateFormat s = new SimpleDateFormat("HH:mm:ss" + " - " + "dd/MM/yyyy");
                     lblhora.setText(s.format(d));
                 }
             }).start();
@@ -64,7 +65,10 @@ Conexion conn;
         }
     }
 //-----------------------------------------------------------------------------
+
+    public void agregar(){
     
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -83,7 +87,9 @@ Conexion conn;
         jButton2 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblVenta = new javax.swing.JTable();
+        lblTotal = new javax.swing.JLabel();
+        txtBuscar = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -133,18 +139,31 @@ Conexion conn;
 
         jLabel5.setText("ABARROTES AZTECA SUPER CEDIS S.A DE C.V");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblVenta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Codigo", "Descripcion", "Precio", "Cantidad", "Importe"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblVenta);
+
+        lblTotal.setText("jLabel6");
+
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyPressed(evt);
+            }
+        });
 
         jMenu1.setText("Opciones");
 
@@ -258,18 +277,9 @@ Conexion conn;
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(70, 70, 70)
-                .addComponent(jButton2)
-                .addGap(56, 56, 56))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblhora, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -282,7 +292,23 @@ Conexion conn;
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(168, 168, 168))))
+                        .addGap(168, 168, 168))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2)
+                                .addGap(56, 56, 56))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtBuscar, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,9 +321,13 @@ Conexion conn;
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(14, 14, 14)
+                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -308,8 +338,8 @@ Conexion conn;
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-       
-       
+
+
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void MsalirMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_MsalirMenuKeyPressed
@@ -317,7 +347,7 @@ Conexion conn;
     }//GEN-LAST:event_MsalirMenuKeyPressed
 
     private void McajonMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_McajonMenuKeyPressed
-        
+
     }//GEN-LAST:event_McajonMenuKeyPressed
 
     private void McajonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_McajonActionPerformed
@@ -325,32 +355,64 @@ Conexion conn;
     }//GEN-LAST:event_McajonActionPerformed
 
     private void MsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MsalirActionPerformed
-       Login l = new Login();
-       l.setVisible(true);
-       this.dispose();
+        Login l = new Login();
+        l.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_MsalirActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
- 
-       Buscar b = new Buscar();
-       b.setVisible(true);
-       this.dispose();
-       
+
+        Buscar b = new Buscar();
+        b.setVisible(true);
+        this.dispose();
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void MBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MBuscarActionPerformed
-       MiniBuscar mb = new MiniBuscar();
-       mb.setVisible(true);       
+        MiniBuscar mb = new MiniBuscar();
+        mb.setVisible(true);
     }//GEN-LAST:event_MBuscarActionPerformed
+
+    private void txtBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyPressed
+       
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String b = txtBuscar.getText();
+            DefaultTableModel model = (DefaultTableModel) tblVenta.getModel();
+//            model.addColumn("codigo");
+//            model.addColumn("descripcion");
+//            model.addColumn("precio");
+//            model.addColumn("cantidad");
+//            model.addColumn("importe");
+//            tblVenta.setModel(model);
+            String[] datos = new String[5];
+            try {
+                sent = conn.createStatement();
+                ResultSet rs = sent.executeQuery("SELECT id_producto, codigo, descripcion, unidad, existencia FROM productos WHERE codigo = " + b);
+                while (rs.next()) {
+                    datos[0] = rs.getString(1);
+                    datos[1] = rs.getString(2);
+                    datos[2] = rs.getString(3);
+                    datos[3] = rs.getString(4);
+                    datos[4] = rs.getString(5);
+                    model.addRow(datos);
+                }
+                //tblVenta.setModel(model);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Ocurrio un problema");
+            }
+            txtBuscar.setText("");
+           
+        }
+
+
+    }//GEN-LAST:event_txtBuscarKeyPressed
 
     /**
      * @param args the command line arguments
      */
-    
 //-----------------------------------------------------------------------------
     public static void main(String args[]) {
-       
-      
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -380,7 +442,6 @@ Conexion conn;
 //                new CajaVista().setVisible(true);
 //            }
 //        });
-
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -416,8 +477,10 @@ Conexion conn;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblhora;
+    private javax.swing.JTable tblVenta;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }
 //------------------------------------------------------------------------------
