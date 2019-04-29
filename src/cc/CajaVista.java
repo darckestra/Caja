@@ -28,8 +28,8 @@ public class CajaVista extends javax.swing.JFrame {
     Statement sent;
     ZoneId zona = ZoneId.systemDefault();
 
-    String cant = "", tot;
-    double conv = 0, mas = 0, resta = 0;
+    String cant = "", tot,cuantos="";
+    double conv = 0, mas = 0, resta = 0,multi=1;
     int sss = 0;
 
     /**
@@ -411,7 +411,8 @@ public class CajaVista extends javax.swing.JFrame {
 
             try {
                 sent = conn.createStatement();
-                ResultSet rs = sent.executeQuery("SELECT id_producto, codigo, descripcion, unidad, existencia FROM productos WHERE codigo = " + b);
+                //ResultSet rs = sent.executeQuery("SELECT id_producto, codigo, descripcion, unidad, existencia FROM productos WHERE codigo = " + b);
+                 ResultSet rs = sent.executeQuery("SELECT id_producto, codigo, descripcion, unidad, existencia FROM productos WHERE codigo = " + b);
                 while (rs.next()) {
                     datos[0] = rs.getString(1);
                     datos[1] = rs.getString(2);
