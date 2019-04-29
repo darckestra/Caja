@@ -143,8 +143,7 @@ private TableRowSorter trsfiltro;
     private void txtBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             this.dispose();
-            CajaVista cv = new CajaVista();
-            cv.setVisible(true);
+            
         }
         else{
             //JOptionPane.showMessageDialog(this, "ocurrito un problema");

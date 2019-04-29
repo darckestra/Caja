@@ -22,11 +22,15 @@ import javax.swing.table.DefaultTableModel;
  * @author Jose
  */
 public class CajaVista extends javax.swing.JFrame {
-int sum=0;
+
     Conexion c = new Conexion();
     Connection conn = c.getConnection();
     Statement sent;
     ZoneId zona = ZoneId.systemDefault();
+
+    String cant = "", tot;
+    double conv = 0, mas = 0, resta = 0;
+    int sss = 0;
 
     /**
      * Creates new form CajaVista
@@ -39,12 +43,12 @@ int sum=0;
         //lblCaja.setText(p);    
         jMenu1.setVisible(true);
         DefaultTableModel model = new DefaultTableModel();
-            model.addColumn("codigo");
-            model.addColumn("descripcion");
-            model.addColumn("precio");
-            model.addColumn("cantidad");
-            model.addColumn("importe");
-            tblVenta.setModel(model);
+        model.addColumn("codigo");
+        model.addColumn("descripcion");
+        model.addColumn("precio");
+        model.addColumn("cantidad");
+        model.addColumn("importe");
+        tblVenta.setModel(model);
     }
 
 //-----------------------------------------------------------------------------
@@ -66,9 +70,10 @@ int sum=0;
     }
 //-----------------------------------------------------------------------------
 
-    public void agregar(){
-    
+    public void agregar() {
+
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -90,6 +95,7 @@ int sum=0;
         tblVenta = new javax.swing.JTable();
         lblTotal = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
+        txtPrueba = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -141,23 +147,34 @@ int sum=0;
 
         tblVenta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Codigo", "Descripcion", "Precio", "Cantidad", "Importe"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, false, false, true
+                true, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tblVenta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblVentaMouseClicked(evt);
+            }
+        });
+        tblVenta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tblVentaKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblVenta);
 
-        lblTotal.setText("jLabel6");
+        lblTotal.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -295,20 +312,21 @@ int sum=0;
                         .addGap(168, 168, 168))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2)
-                                .addGap(56, 56, 56))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())))
+                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtBuscar, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1))
                         .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(349, 349, 349)
+                .addComponent(txtPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addGap(56, 56, 56))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,12 +344,17 @@ int sum=0;
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jButton2))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24))))
         );
 
         pack();
@@ -374,7 +397,7 @@ int sum=0;
     }//GEN-LAST:event_MBuscarActionPerformed
 
     private void txtBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyPressed
-       
+
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String b = txtBuscar.getText();
             DefaultTableModel model = (DefaultTableModel) tblVenta.getModel();
@@ -385,6 +408,7 @@ int sum=0;
 //            model.addColumn("importe");
 //            tblVenta.setModel(model);
             String[] datos = new String[5];
+
             try {
                 sent = conn.createStatement();
                 ResultSet rs = sent.executeQuery("SELECT id_producto, codigo, descripcion, unidad, existencia FROM productos WHERE codigo = " + b);
@@ -394,18 +418,61 @@ int sum=0;
                     datos[2] = rs.getString(3);
                     datos[3] = rs.getString(4);
                     datos[4] = rs.getString(5);
+                    cant = rs.getString(5);
+                    sss = sss + 1;
                     model.addRow(datos);
+                    System.out.println("cant " + cant);
+                    conv = Double.parseDouble(cant);
+                    mas = mas + conv;
+                    System.out.println("sss " + sss);
+                    System.out.println("mas " + mas);
+                    tot = String.valueOf(mas);
+                    lblTotal.setText(tot);
+
                 }
+
                 //tblVenta.setModel(model);
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, "Ocurrio un problema");
             }
+
             txtBuscar.setText("");
-           
+
         }
+
+//        if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
+//            Buscar bus = new Buscar();
+//            bus.setVisible(true);
+//        }
 
 
     }//GEN-LAST:event_txtBuscarKeyPressed
+
+    private void tblVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblVentaMouseClicked
+//        int col = tblVenta.getSelectedRow();
+//        DefaultTableModel model = (DefaultTableModel) tblVenta.getModel();
+//        txtPrueba.setText(tblVenta.getModel().getValueAt(col, 4).toString());
+//        String recibe = txtPrueba.getText();
+//        resta = Double.parseDouble(recibe);
+//        mas = mas - resta;
+//        tot = String.valueOf(mas);
+//        lblTotal.setText(tot);
+//        model.removeRow(col);
+    }//GEN-LAST:event_tblVentaMouseClicked
+
+    private void tblVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblVentaKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            int col = tblVenta.getSelectedRow();
+            DefaultTableModel model = (DefaultTableModel) tblVenta.getModel();
+            txtPrueba.setText(tblVenta.getModel().getValueAt(col, 4).toString());
+            String recibe = txtPrueba.getText();
+            resta = Double.parseDouble(recibe);
+            mas = mas - resta;
+            tot = String.valueOf(mas);
+            lblTotal.setText(tot);
+            model.removeRow(col);
+        }
+    }//GEN-LAST:event_tblVentaKeyPressed
 
     /**
      * @param args the command line arguments
@@ -481,6 +548,7 @@ int sum=0;
     private javax.swing.JLabel lblhora;
     private javax.swing.JTable tblVenta;
     private javax.swing.JTextField txtBuscar;
+    private javax.swing.JTextField txtPrueba;
     // End of variables declaration//GEN-END:variables
 }
 //------------------------------------------------------------------------------

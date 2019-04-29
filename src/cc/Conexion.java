@@ -28,10 +28,12 @@ public class Conexion {
     
     public static Connection conn;
     public static final String driver = "com.mysql.jdbc.Driver";
-    public static final String user ="root";
-    public static final String password = "";
-    //public static final String url="jdbc:mysql://192.168.1.175:3306/compucaja";
-    public static final String url="jdbc:mysql://localhost:3306/compucaja";
+    public static final String user ="prueba2";
+    //public static final String user ="root";
+    public static final String password = "1234";
+    //public static final String password = "";
+    public static final String url="jdbc:mysql://192.168.0.33:3306/compucaja";
+    //public static final String url="jdbc:mysql://localhost:3306/compucaja";
     
     
  
