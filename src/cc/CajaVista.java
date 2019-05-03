@@ -27,6 +27,7 @@ public class CajaVista extends javax.swing.JFrame {
     Connection conn = c.getConnection();
     Statement sent;
     ZoneId zona = ZoneId.systemDefault();
+    
 
     String cant = "", tot, cuantos = "";
     double conv = 0, mas = 0, resta = 0, multi = 1;
@@ -36,6 +37,7 @@ public class CajaVista extends javax.swing.JFrame {
      * Creates new form CajaVista
      */
     public CajaVista() {
+        
         initComponents();
         new Thread(new reloj()).start();
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -49,6 +51,8 @@ public class CajaVista extends javax.swing.JFrame {
         model.addColumn("cantidad");
         model.addColumn("importe");
         tblVenta.setModel(model);
+        txtPrueba.setVisible(false);
+        txtPrueba.setEnabled(false);
     }
 
 //-----------------------------------------------------------------------------
@@ -120,6 +124,7 @@ public class CajaVista extends javax.swing.JFrame {
         Msalir = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         MBuscar = new javax.swing.JMenuItem();
+        MPrecios = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setUndecorated(true);
@@ -286,6 +291,15 @@ public class CajaVista extends javax.swing.JFrame {
         });
         jMenu1.add(MBuscar);
 
+        MPrecios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
+        MPrecios.setText("Precios");
+        MPrecios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MPreciosActionPerformed(evt);
+            }
+        });
+        jMenu1.add(MPrecios);
+
         jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
@@ -320,8 +334,8 @@ public class CajaVista extends javax.swing.JFrame {
                             .addComponent(jScrollPane1))
                         .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(349, 349, 349)
-                .addComponent(txtPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(txtPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(18, 18, 18)
@@ -343,18 +357,19 @@ public class CajaVista extends javax.swing.JFrame {
                 .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
                             .addComponent(jButton2))
-                        .addContainerGap())
+                        .addGap(21, 21, 21))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24))))
+                        .addContainerGap())))
         );
 
         pack();
@@ -372,11 +387,11 @@ public class CajaVista extends javax.swing.JFrame {
     private void McajonMenuKeyPressed(javax.swing.event.MenuKeyEvent evt) {//GEN-FIRST:event_McajonMenuKeyPressed
 
     }//GEN-LAST:event_McajonMenuKeyPressed
-
+//abrir cajon de dinero
     private void McajonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_McajonActionPerformed
         JOptionPane.showMessageDialog(this, "Cajon abierto");
     }//GEN-LAST:event_McajonActionPerformed
-
+//Opcion salir menu
     private void MsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MsalirActionPerformed
         Login l = new Login();
         l.setVisible(true);
@@ -387,15 +402,17 @@ public class CajaVista extends javax.swing.JFrame {
 
         Buscar b = new Buscar();
         b.setVisible(true);
-        this.dispose();
+        //this.dispose();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    //menu buscar
     private void MBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MBuscarActionPerformed
         MiniBuscar mb = new MiniBuscar();
         mb.setVisible(true);
     }//GEN-LAST:event_MBuscarActionPerformed
 
+    //Buscar los productos por codigo o por producto
     private void txtBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyPressed
 
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -422,11 +439,11 @@ public class CajaVista extends javax.swing.JFrame {
                     cant = rs.getString(5);
                     sss = sss + 1;
                     model.addRow(datos);
-                    System.out.println("cant " + cant);
+                    //System.out.println("cant " + cant);
                     conv = Double.parseDouble(cant);
                     mas = mas + conv;
-                    System.out.println("sss " + sss);
-                    System.out.println("mas " + mas);
+                    //System.out.println("sss " + sss);
+                    //System.out.println("mas " + mas);
                     tot = String.valueOf(mas);
                     lblTotal.setText(tot);
 
@@ -462,6 +479,7 @@ public class CajaVista extends javax.swing.JFrame {
 //        model.removeRow(col);
     }//GEN-LAST:event_tblVentaMouseClicked
 
+    //suma de los productos
     private void tblVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblVentaKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
             int col = tblVenta.getSelectedRow();
@@ -475,6 +493,11 @@ public class CajaVista extends javax.swing.JFrame {
             model.removeRow(col);
         }
     }//GEN-LAST:event_tblVentaKeyPressed
+    //lista de precios 1 al 5 de los productos
+    private void MPreciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MPreciosActionPerformed
+    Precios p= new Precios();   
+    p.setVisible(true);
+    }//GEN-LAST:event_MPreciosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -515,6 +538,7 @@ public class CajaVista extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem MBuscar;
+    private javax.swing.JMenuItem MPrecios;
     private javax.swing.JMenuItem Mcajon;
     private javax.swing.JMenuItem Msalir;
     private javax.swing.JButton jButton1;
