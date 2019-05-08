@@ -5,18 +5,75 @@
  */
 package cc;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
+import java.sql.*;
+import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 /**
  *
  * @author Jose
  */
 public class Precios extends javax.swing.JFrame {
-
+Conexion c= new Conexion();
+Connection conn = c.getConnection();
+Statement sent;
     /**
      * Creates new form Precios
      */
     public Precios() {
         initComponents();
         setLocationRelativeTo(null);
+        llenar();
+    }
+    
+    public void llenar() {
+        DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int filas, int columnas) {
+                //return super.isCellEditable(i, i1); //To change body of generated methods, choose Tools | Templates.
+                if (columnas == 7) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        };
+
+        //model.addColumn("id");
+        model.addColumn("codigo");
+        model.addColumn("descripcion");
+        model.addColumn("uno");
+        model.addColumn("dos");
+        model.addColumn("tres");
+        model.addColumn("cuatro");
+        model.addColumn("cinco");
+        tblPrecios.setModel(model);
+        String[] datos = new String[7];
+        try {
+            sent = conn.createStatement();
+            ResultSet rs = sent.executeQuery("SELECT codigo,descripcion,uno,dos,tres,cuatro,cinco from precios ps left join productos p on ps.id_producto=p.id_producto WHERE p.codigo = 758104000159");
+            while (rs.next()) {
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                datos[3] = rs.getString(4);
+                datos[4] = rs.getString(5);
+                datos[5] = rs.getString(6);
+                datos[6] = rs.getString(7);
+
+                model.addRow(datos);
+
+            }
+            tblPrecios.setModel(model);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un problema");
+        }
+
     }
 
     /**
@@ -29,22 +86,22 @@ public class Precios extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblPrecios = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblPrecios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblPrecios);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -103,6 +160,6 @@ public class Precios extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblPrecios;
     // End of variables declaration//GEN-END:variables
 }

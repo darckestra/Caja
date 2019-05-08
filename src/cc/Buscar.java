@@ -32,13 +32,19 @@ private TableRowSorter trsfiltro;
     public Buscar() {
         initComponents();
         llenar();
+        
         this.setExtendedState(MAXIMIZED_BOTH); 
+        
+        
+        //jMenu1.setEnabled(false);
     }
  public void filtro() {
      //se instancia el filtro
         trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscar.getText(), 0,1));
     }
 
+ 
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -54,6 +60,9 @@ private TableRowSorter trsfiltro;
         tblBuscar = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         txtdos = new javax.swing.JTextField();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setUndecorated(true);
@@ -79,13 +88,13 @@ private TableRowSorter trsfiltro;
 
         tblBuscar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         tblBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -101,6 +110,21 @@ private TableRowSorter trsfiltro;
                 jButton1ActionPerformed(evt);
             }
         });
+
+        jMenu1.setText("opc");
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
+        jMenuItem1.setText("Precios");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -142,8 +166,7 @@ private TableRowSorter trsfiltro;
 //se regresa a la vista de la caja
     private void txtBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            this.dispose();
-            
+            this.dispose();  
         }
         else{
             //JOptionPane.showMessageDialog(this, "ocurrito un problema");
@@ -179,7 +202,7 @@ private TableRowSorter trsfiltro;
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
      
     }//GEN-LAST:event_txtBuscarKeyReleased
-
+//se mandan los datos a los txt para poder hacer el update a la base de datos (temporal)
     private void tblBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBuscarMouseClicked
        int col = tblBuscar.getSelectedRow();        
         //txtProveedor.setText(tblProveedor.getModel().getValueAt(col, 0).toString());
@@ -229,34 +252,54 @@ private TableRowSorter trsfiltro;
         txtdos.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        Precios p = new Precios();
+        p.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     //se hace el llenado de la tabla con un select a la base de datos
-    public void llenar(){
-       DefaultTableModel model = new DefaultTableModel();
-       //model.addColumn("id");
-       model.addColumn("codigo");
-       model.addColumn("descripcion");
-       model.addColumn("unidad");
-       model.addColumn("existencia");
-       model.addColumn("familia");
-       tblBuscar.setModel(model);
-       String []datos= new String[5];
+    public void llenar() {
+        DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int filas, int columnas) {
+                //return super.isCellEditable(i, i1); //To change body of generated methods, choose Tools | Templates.
+                if (columnas == 5) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        };
+
+        //model.addColumn("id");
+        model.addColumn("codigo");
+        model.addColumn("descripcion");
+        model.addColumn("unidad");
+        model.addColumn("existencia");
+        model.addColumn("familia");
+        tblBuscar.setModel(model);
+        String[] datos = new String[5];
         try {
-           sent = conn.createStatement();
+            sent = conn.createStatement();
             ResultSet rs = sent.executeQuery("SELECT p.codigo,p.descripcion,p.unidad,p.existencia, f.descripcion as ddd FROM productos p left join familias f on p.id_familia=f.id_familia");
-            while (rs.next()) {                
-                datos[0]=rs.getString(1);
-                datos[1]=rs.getString(2);
-                datos[2]=rs.getString(3);
-                datos[3]=rs.getString(4);
-                datos[4]=rs.getString(5);
-                
+            while (rs.next()) {
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                datos[3] = rs.getString(4);
+                datos[4] = rs.getString(5);
+
                 model.addRow(datos);
+
             }
             tblBuscar.setModel(model);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Ocurrio un problema");
         }
+
     }
+
     /**
      * @param args the command line arguments
      */
@@ -295,6 +338,9 @@ private TableRowSorter trsfiltro;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblBuscar;
     private javax.swing.JTextField txtBuscar;

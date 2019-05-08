@@ -27,24 +27,34 @@ public class CajaVista extends javax.swing.JFrame {
     Connection conn = c.getConnection();
     Statement sent;
     ZoneId zona = ZoneId.systemDefault();
-    
 
-    String cant = "", tot, cuantos = "";
-    double conv = 0, mas = 0, resta = 0, multi = 1;
+    String precio = "", tot, num = "20", importe = "";
+    double conv = 0, conv2 = 0, mas = 0, resta = 0, multi = 0;
     int sss = 0;
 
     /**
      * Creates new form CajaVista
      */
     public CajaVista() {
-        
+
         initComponents();
         new Thread(new reloj()).start();
         this.setExtendedState(MAXIMIZED_BOTH);
         //lblCajero.setText(u);
         //lblCaja.setText(p);    
         jMenu1.setVisible(true);
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int filas, int columnas) {
+                //return super.isCellEditable(i, i1); //To change body of generated methods, choose Tools | Templates.
+                if (columnas == 5) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        };
         model.addColumn("codigo");
         model.addColumn("descripcion");
         model.addColumn("precio");
@@ -100,6 +110,7 @@ public class CajaVista extends javax.swing.JFrame {
         lblTotal = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
         txtPrueba = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -186,6 +197,9 @@ public class CajaVista extends javax.swing.JFrame {
                 txtBuscarKeyPressed(evt);
             }
         });
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel6.setText("$");
 
         jMenu1.setText("Opciones");
 
@@ -326,6 +340,8 @@ public class CajaVista extends javax.swing.JFrame {
                         .addGap(168, 168, 168))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
                         .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -335,7 +351,7 @@ public class CajaVista extends javax.swing.JFrame {
                         .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(txtPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(18, 18, 18)
@@ -359,8 +375,10 @@ public class CajaVista extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
@@ -417,48 +435,39 @@ public class CajaVista extends javax.swing.JFrame {
 
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String b = txtBuscar.getText();
+            //num=txtBuscar.getText();
+            JOptionPane.showMessageDialog(null, "buscar " + b);
             DefaultTableModel model = (DefaultTableModel) tblVenta.getModel();
-//            model.addColumn("codigo");
-//            model.addColumn("descripcion");
-//            model.addColumn("precio");
-//            model.addColumn("cantidad");
-//            model.addColumn("importe");
-//            tblVenta.setModel(model);
             String[] datos = new String[5];
 
             try {
                 sent = conn.createStatement();
-                //ResultSet rs = sent.executeQuery("SELECT id_producto, codigo, descripcion, unidad, existencia FROM productos WHERE codigo = " + b);
-                ResultSet rs = sent.executeQuery("SELECT id_producto, codigo, descripcion, unidad, existencia FROM productos WHERE codigo = " + b);
+                ResultSet rs = sent.executeQuery("SELECT p.codigo,p.descripcion,ps.uno from productos p left join precios ps on p.id_producto = ps.id_producto where p.codigo = " + b);
                 while (rs.next()) {
                     datos[0] = rs.getString(1);
                     datos[1] = rs.getString(2);
                     datos[2] = rs.getString(3);
-                    datos[3] = rs.getString(4);
-                    datos[4] = rs.getString(5);
-                    cant = rs.getString(5);
-                    sss = sss + 1;
+                    datos[3] = num;
+                    conv = Double.parseDouble(num);
+                    precio = rs.getString(3);
+                    conv2 = Double.parseDouble(precio);
+                    multi = conv * conv2;
+                    importe = tot = String.valueOf(multi);
+                    datos[4] = importe;
                     model.addRow(datos);
-                    //System.out.println("cant " + cant);
-                    conv = Double.parseDouble(cant);
-                    mas = mas + conv;
-                    //System.out.println("sss " + sss);
-                    //System.out.println("mas " + mas);
+                    mas = mas + multi;
                     tot = String.valueOf(mas);
                     lblTotal.setText(tot);
 
                 }
 
-                //tblVenta.setModel(model);
             } catch (SQLException e) {
-                //JOptionPane.showMessageDialog(null, "Ocurrio un problema");
-                 Buscar bus = new Buscar();
-            bus.setVisible(true);
+
             }
 
             txtBuscar.setText("");
 
-        } 
+        }
 
 //        if (evt.getKeyCode() == KeyEvent.VK_SHIFT) {
 //            Buscar bus = new Buscar();
@@ -479,7 +488,7 @@ public class CajaVista extends javax.swing.JFrame {
 //        model.removeRow(col);
     }//GEN-LAST:event_tblVentaMouseClicked
 
-    //suma de los productos
+    //suma y resta de los productos
     private void tblVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblVentaKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
             int col = tblVenta.getSelectedRow();
@@ -493,10 +502,9 @@ public class CajaVista extends javax.swing.JFrame {
             model.removeRow(col);
         }
     }//GEN-LAST:event_tblVentaKeyPressed
-    //lista de precios 1 al 5 de los productos
+
     private void MPreciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MPreciosActionPerformed
-    Precios p= new Precios();   
-    p.setVisible(true);
+
     }//GEN-LAST:event_MPreciosActionPerformed
 
     /**
@@ -548,6 +556,7 @@ public class CajaVista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
