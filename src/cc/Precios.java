@@ -21,15 +21,27 @@ public class Precios extends javax.swing.JFrame {
 Conexion c= new Conexion();
 Connection conn = c.getConnection();
 Statement sent;
+String recibiendo;
+
     /**
      * Creates new form Precios
      */
     public Precios() {
         initComponents();
         setLocationRelativeTo(null);
+        
+        //JOptionPane.showMessageDialog(this, "recibiendo "+codigo2);
+        Buscar b = new Buscar(); // se instancia la ventana de buscar       
+        recibiendo= b.codigo;//se le asigna el valor recibido 
+        //JOptionPane.showMessageDialog(this, "recibiendo "+recibiendo);
         llenar();
+        
     }
     
+    
+    
+            
+    //llena la tabla con el codigo recibido de la ventana de buscar
     public void llenar() {
         DefaultTableModel model = new DefaultTableModel() {
             @Override
@@ -56,7 +68,7 @@ Statement sent;
         String[] datos = new String[7];
         try {
             sent = conn.createStatement();
-            ResultSet rs = sent.executeQuery("SELECT codigo,descripcion,uno,dos,tres,cuatro,cinco from precios ps left join productos p on ps.id_producto=p.id_producto WHERE p.codigo = 758104000159");
+            ResultSet rs = sent.executeQuery("SELECT codigo,descripcion,uno,dos,tres,cuatro,cinco from precios ps left join productos p on ps.id_producto=p.id_producto WHERE p.codigo = " + recibiendo);
             while (rs.next()) {
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
@@ -115,7 +127,7 @@ Statement sent;
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
