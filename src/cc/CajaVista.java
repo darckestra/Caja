@@ -217,6 +217,7 @@ public class CajaVista extends javax.swing.JFrame {
         jLabel7.setText("x=");
 
         lblmulti.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        lblmulti.setText("1");
 
         jMenu1.setText("Opciones");
 
@@ -415,7 +416,7 @@ public class CajaVista extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE))
+                            .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
@@ -555,6 +556,7 @@ public class CajaVista extends javax.swing.JFrame {
        String prueba =JOptionPane.showInputDialog(this, "Cantidad Recibida"); 
 //       JOptionPane.showInputDialog(this, "Cantidad Recibida", "Cobrar", ppp);
        JOptionPane.showMessageDialog(this, prueba);
+       
     }//GEN-LAST:event_MenuCobrarActionPerformed
 
     /**
