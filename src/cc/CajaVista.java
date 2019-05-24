@@ -28,9 +28,8 @@ public class CajaVista extends javax.swing.JFrame {
     Statement sent;
     ZoneId zona = ZoneId.systemDefault();
 
-    String precio = "", tot, num = "1", importe = "",vacio="";
-    double conv = 0, conv2 = 0, mas = 0, resta = 0, multi = 0;
-    int x=0;
+    String precio = "", tot, num = "1", importe = "",vacio="",dinero="";
+    double conv = 0, conv2 = 0, mas = 0, resta = 0, multi = 0,conv3=0,cambio=0;   
 
     /**
      * Creates new form CajaVista
@@ -114,6 +113,8 @@ public class CajaVista extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         lblmulti = new javax.swing.JLabel();
+        lblTP = new javax.swing.JLabel();
+        lblTM = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -218,6 +219,11 @@ public class CajaVista extends javax.swing.JFrame {
 
         lblmulti.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         lblmulti.setText("1");
+
+        lblTP.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+
+        lblTM.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        lblTM.setText("MXN");
 
         jMenu1.setText("Opciones");
 
@@ -374,10 +380,13 @@ public class CajaVista extends javax.swing.JFrame {
                         .addComponent(lblmulti, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(82, 82, 82))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblTM)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTP, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -411,19 +420,25 @@ public class CajaVista extends javax.swing.JFrame {
                 .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
+                            .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
                             .addComponent(jButton2))
                         .addGap(21, 21, 21))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtPrueba, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
@@ -550,13 +565,34 @@ public class CajaVista extends javax.swing.JFrame {
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
        
     }//GEN-LAST:event_formKeyPressed
-
+//
     private void MenuCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCobrarActionPerformed
        
-       String prueba =JOptionPane.showInputDialog(this, "Cantidad Recibida"); 
-//       JOptionPane.showInputDialog(this, "Cantidad Recibida", "Cobrar", ppp);
-       JOptionPane.showMessageDialog(this, prueba);
+       String prueba =JOptionPane.showInputDialog(this, "Ingrese la opcion de Forma de pago Correspondiente"
+       +"\n 1.- EFECTIVO"
+       +"\n 2.- TARJETA DEBITO/CREDITO" 
+       +"\n 3.- VALES");                    
        
+        if (prueba.equals("1")) {
+            lblTP.setText("Efectivo");
+            lblTM.setVisible(true);
+        }
+        if(prueba.equals("2")){
+        lblTP.setText("Tarjeta Debito/Credito");
+        lblTM.setVisible(true);
+        }
+        if(prueba.equals("3")){
+        lblTP.setText("Vales");
+        lblTM.setVisible(false);
+        }
+        
+       dinero =JOptionPane.showInputDialog(this, "Ingrese el monto recibido");     
+       JOptionPane.showMessageDialog(this, dinero);
+       conv3 = Double.parseDouble(dinero);
+       cambio= conv3-mas;
+       JOptionPane.showMessageDialog(this, cambio);
+       String xxx = String.valueOf(cambio);
+       lblTotal.setText(xxx);
     }//GEN-LAST:event_MenuCobrarActionPerformed
 
     /**
@@ -634,6 +670,8 @@ public class CajaVista extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JLabel lblTM;
+    private javax.swing.JLabel lblTP;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblhora;
     private javax.swing.JLabel lblmulti;
