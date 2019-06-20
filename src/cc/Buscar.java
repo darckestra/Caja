@@ -246,12 +246,15 @@ private TableRowSorter trsfiltro;
     }//GEN-LAST:event_jButton1ActionPerformed
 //abre la ventana de precios
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        
         codigo = txtdos.getText();
-        JOptionPane.showMessageDialog(null, "codigo " + codigo);
+        if (codigo.equals("")) {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado codigo/producto");
+        }
+        else{
+        //JOptionPane.showMessageDialog(null, "codigo " + codigo);
         Precios p = new Precios();              
         p.setVisible(true);
-        
+        }   
     }//GEN-LAST:event_jMenuItem1ActionPerformed
     //---------------------------------------------------------------------
     //se hace el llenado de la tabla con un select a la base de datos

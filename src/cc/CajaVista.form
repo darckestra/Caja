@@ -225,8 +225,12 @@
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="lblTM" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="lblTP" min="-2" pref="326" max="-2" attributes="0"/>
+                      <Component id="lblTP" min="-2" pref="174" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="lblMP" min="-2" pref="143" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="lblMP1" min="-2" pref="138" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="lblTotal" min="-2" pref="160" max="-2" attributes="0"/>
@@ -243,7 +247,7 @@
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-              <Component id="txtPrueba" min="-2" pref="21" max="-2" attributes="0"/>
+              <Component id="txtPrueba" min="-2" pref="107" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
               <Component id="jButton1" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -272,23 +276,16 @@
               <Component id="txtBuscar" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="454" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel6" max="32767" attributes="0"/>
-                          <Component id="lblTotal" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblTM" max="32767" attributes="0"/>
-                          <Component id="lblTP" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lblTM" alignment="1" max="32767" attributes="0"/>
+                  <Component id="lblTP" max="32767" attributes="0"/>
+                  <Component id="lblMP" alignment="1" max="32767" attributes="0"/>
+                  <Component id="lblTotal" pref="53" max="32767" attributes="0"/>
+                  <Component id="jLabel6" alignment="1" max="32767" attributes="0"/>
+                  <Component id="lblMP1" alignment="1" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -411,6 +408,7 @@
           <Font name="Tahoma" size="36" style="1"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtBuscar">
@@ -457,6 +455,20 @@
           <Font name="Tahoma" size="24" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="MXN"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblMP">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="24" style="1"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblMP1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="24" style="1"/>
+        </Property>
       </Properties>
     </Component>
   </SubComponents>

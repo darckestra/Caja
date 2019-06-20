@@ -28,8 +28,7 @@ String recibiendo;
      */
     public Precios() {
         initComponents();
-        setLocationRelativeTo(null);
-        
+        setLocationRelativeTo(null);        
         //JOptionPane.showMessageDialog(this, "recibiendo "+codigo2);
         Buscar b = new Buscar(); // se instancia la ventana de buscar       
         recibiendo= b.codigo;//se le asigna el valor recibido 
